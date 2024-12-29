@@ -276,14 +276,14 @@ def collator(data):
         collate_data["max_%s_length"%(label_type[:-1])] = max_label_length
     return collate_data
 
-def get_dataloader(tokenizer, split, data_dir="../data/MAVEN_ERE", max_length=128, batch_size=8, shuffle=True, ignore_nonetype=False, sample_rate=None):
+def get_dataloader(tokenizer, split, data_dir="MAVEN_ERE", max_length=128, batch_size=8, shuffle=True, ignore_nonetype=False, sample_rate=None):
     dataset = myDataset(tokenizer, data_dir, split, max_length=max_length, ignore_nonetype=ignore_nonetype, sample_rate=sample_rate)
     return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, collate_fn=collator)
 
 if __name__ == "__main__":
     from transformers import RobertaTokenizer
     tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
-    dataloader = get_dataloader(tokenizer, "test", shuffle=False, max_length=256)
+    dataloader = get_dataloader(tokenizer, "train", shuffle=False, max_length=256)
     for data in dataloader:
         print(data["input_ids"].size())
         print(data["attention_mask"].size())

@@ -6,13 +6,14 @@ import torch.nn.functional as F
 from .data import TEMPREL2ID, SUBEVENTREL2ID, CAUSALREL2ID, COREFREL2ID
 
 class EventEncoder(nn.Module):
-    def __init__(self, vocab_size, model_name="/data/MODELS/roberta-base", aggr="mean"):
+    def __init__(self, vocab_size, model_name="FacebookAI/roberta-base", aggr="mean"):
         nn.Module.__init__(self)
         config = AutoConfig.from_pretrained(model_name)
-        if isinstance(config, BertConfig):
-            self.model = RobertaModel.from_pretrained(model_name)
-        else:
-            raise NotImplementedError
+        # if isinstance(config, BertConfig):
+        #     self.model = RobertaModel.from_pretrained(model_name)
+        # else:
+        #     raise NotImplementedError
+        self.model = RobertaModel.from_pretrained(model_name)
         self.model.resize_token_embeddings(vocab_size)
         self.model = nn.DataParallel(self.model)
         self.aggr = aggr
@@ -115,7 +116,7 @@ class CorefPairScorer(nn.Module):
         return all_probs
 
 class Model(nn.Module):
-    def __init__(self, vocab_size, model_name="/data/MODELS/roberta-base", embed_dim=768, aggr="mean"):
+    def __init__(self, vocab_size, model_name="FacebookAI/roberta-base", embed_dim=768, aggr="mean"):
         nn.Module.__init__(self)
         self.encoder = EventEncoder(vocab_size, model_name=model_name, aggr=aggr)
         self.temporal_scorer = PairScorer(embed_dim=embed_dim, out_dim=len(TEMPREL2ID))

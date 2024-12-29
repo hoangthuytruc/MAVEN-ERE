@@ -223,7 +223,7 @@ if __name__ == "__main__":
 
     set_seed(args.seed)
     
-    tokenizer = RobertaTokenizer.from_pretrained("/data/MODELS/roberta-base")
+    tokenizer = RobertaTokenizer.from_pretrained("FacebookAI/roberta-base")
     print("loading data...")
     if not args.eval_only:
         train_dataloader = get_dataloader(tokenizer, "train", max_length=256, shuffle=True, batch_size=args.batch_size, ignore_nonetype=args.ignore_nonetype, sample_rate=args.sample_rate)
@@ -389,16 +389,16 @@ if __name__ == "__main__":
         model.load_state_dict(state["model"])
         if k=='COREFERENCE':
             all_preds = coref_predict(model, test_dataloader)
-            coref_dump("../data/MAVEN_ERE/test.jsonl", all_preds, dump_results)
+            coref_dump("MAVEN_ERE/test.jsonl", all_preds, dump_results)
         elif k=='TEMPORAL':
             all_preds = temp_predict(model, test_dataloader)
-            temporal_dump("../data/MAVEN_ERE/test.jsonl", all_preds, dump_results)
+            temporal_dump("MAVEN_ERE/test.jsonl", all_preds, dump_results)
         elif k=='CAUSAL':
             all_preds = causal_predict(model, test_dataloader)
-            causal_dump("../data/MAVEN_ERE/test.jsonl", all_preds, dump_results)
+            causal_dump("MAVEN_ERE/test.jsonl", all_preds, dump_results)
         elif k=='SUBEVENT':
             all_preds = subevent_predict(model, test_dataloader)
-            subevent_dump("../data/MAVEN_ERE/test.jsonl", all_preds, dump_results)
+            subevent_dump("MAVEN_ERE/test.jsonl", all_preds, dump_results)
     with open(os.path.join(output_dir, "test_prediction.jsonl"), "w")as f:
         f.writelines("\n".join([json.dumps(dump_results[key]) for key in dump_results]))
     sys.stdout.close()
