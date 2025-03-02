@@ -276,7 +276,7 @@ def collator(data):
         collate_data["max_%s_length"%(label_type[:-1])] = max_label_length
     return collate_data
 
-def get_dataloader(tokenizer, split, data_dir="MAVEN_ERE", max_length=128, batch_size=8, shuffle=True, ignore_nonetype=False, sample_rate=None):
+def get_dataloader(tokenizer, split, data_dir="/kaggle/input/ere-maven", max_length=128, batch_size=8, shuffle=True, ignore_nonetype=False, sample_rate=None):
     dataset = myDataset(tokenizer, data_dir, split, max_length=max_length, ignore_nonetype=ignore_nonetype, sample_rate=sample_rate)
     return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, collate_fn=collator)
 
