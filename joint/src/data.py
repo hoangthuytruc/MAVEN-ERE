@@ -285,8 +285,8 @@ def get_dataloader(tokenizer, split, data_dir="/kaggle/input/ere-maven", max_len
     return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle, collate_fn=collator)
 
 if __name__ == "__main__":
-    from transformers import RobertaTokenizer
-    tokenizer = RobertaTokenizer.from_pretrained("xlm-roberta-base")
+    from transformers import XLMRobertaTokenizer
+    tokenizer = XLMRobertaTokenizer.from_pretrained("xlm-roberta-base")
     dataloader = get_dataloader(tokenizer, "train", shuffle=False, max_length=256)
     for data in dataloader:
         print(data["input_ids"].size())

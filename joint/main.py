@@ -5,7 +5,7 @@ import random
 import numpy as np
 from tqdm import tqdm
 from src.data import myDataset, get_dataloader
-from transformers import AdamW, RobertaTokenizer, get_linear_schedule_with_warmup
+from transformers import AdamW, XLMRobertaTokenizer, get_linear_schedule_with_warmup
 from src.utils import get_predicted_clusters, get_event2cluster, fill_expand
 from src.metrics import evaluate_documents, b_cubed, ceafe, muc, Evaluator, blanc
 from src.dump_result import coref_dump,causal_dump,temporal_dump,subevent_dump
@@ -223,7 +223,7 @@ if __name__ == "__main__":
 
     set_seed(args.seed)
     
-    tokenizer = RobertaTokenizer.from_pretrained("FacebookAI/xlm-roberta-base")
+    tokenizer = XLMRobertaTokenizer.from_pretrained("FacebookAI/xlm-roberta-base")
     print("loading data...")
     if not args.eval_only:
         train_dataloader = get_dataloader(tokenizer, "train", max_length=256, shuffle=True, batch_size=args.batch_size, ignore_nonetype=args.ignore_nonetype, sample_rate=args.sample_rate)
