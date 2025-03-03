@@ -198,9 +198,9 @@ class myDataset(Dataset):
                     print(word)
                     print(sp)
                     if i < sp[1][0]:
-                        context_ids = self.tokenizer(word[i:sp[1][0]], is_split_into_words=True, add_special_tokens=False)["input_ids"]
+                        context_ids = self.tokenizer(word[i:sp[1][0]], is_split_into_words=False, add_special_tokens=False)["input_ids"]
                         tmp_input_ids += context_ids
-                    event_ids = self.tokenizer(word[sp[1][0]:sp[1][1]], is_split_into_words=True, add_special_tokens=False)["input_ids"]
+                    event_ids = self.tokenizer(word[sp[1][0]:sp[1][1]], is_split_into_words=False, add_special_tokens=False)["input_ids"]
                     start = len(tmp_input_ids)
                     end = len(tmp_input_ids) + len(event_ids)
                     tmp_event_spans.append((start, end))
@@ -208,7 +208,7 @@ class myDataset(Dataset):
                     i = sp[1][1]
                     event_id += 1
                 if word[i:]:
-                    tmp_input_ids += self.tokenizer(word[i:], is_split_into_words=True, add_special_tokens=False)["input_ids"]
+                    tmp_input_ids += self.tokenizer(word[i:], is_split_into_words=False, add_special_tokens=False)["input_ids"]
                 
                 # add SEP between sentences
                 tmp_input_ids.append(self.tokenizer.sep_token_id)
