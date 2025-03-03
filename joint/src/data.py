@@ -193,6 +193,10 @@ class myDataset(Dataset):
                 # add special tokens for event
                 while event_id < len(spans) and spans[event_id][0] == sent_id:
                     sp = spans[event_id]
+                    print(spans)
+                    print(event_id)
+                    print(word)
+                    print(sp)
                     if i < sp[1][0]:
                         context_ids = self.tokenizer(word[i:sp[1][0]], is_split_into_words=True, add_special_tokens=False)["input_ids"]
                         tmp_input_ids += context_ids
