@@ -395,16 +395,16 @@ if __name__ == "__main__":
         model.load_state_dict(state["model"])
         if k=='COREFERENCE':
             all_preds = coref_predict(model, test_dataloader)
-            coref_dump("MAVEN_ERE/test.jsonl", all_preds, dump_results)
+            coref_dump("/kaggle/input/ere-maven/test.jsonl", all_preds, dump_results)
         elif k=='TEMPORAL':
             all_preds = temp_predict(model, test_dataloader)
-            temporal_dump("MAVEN_ERE/test.jsonl", all_preds, dump_results)
+            temporal_dump("/kaggle/input/ere-maven/test.jsonl", all_preds, dump_results)
         elif k=='CAUSAL':
             all_preds = causal_predict(model, test_dataloader)
-            causal_dump("MAVEN_ERE/test.jsonl", all_preds, dump_results)
+            causal_dump("/kaggle/input/ere-maven/test.jsonl", all_preds, dump_results)
         elif k=='SUBEVENT':
             all_preds = subevent_predict(model, test_dataloader)
-            subevent_dump("MAVEN_ERE/test.jsonl", all_preds, dump_results)
+            subevent_dump("/kaggle/input/ere-maven/test.jsonl", all_preds, dump_results)
     with open(os.path.join(output_dir, "test_prediction.jsonl"), "w")as f:
         f.writelines("\n".join([json.dumps(dump_results[key]) for key in dump_results]))
     sys.stdout.close()
