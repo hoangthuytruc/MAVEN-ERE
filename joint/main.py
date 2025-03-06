@@ -373,15 +373,15 @@ if __name__ == "__main__":
                 if glb_step % args.eval_steps == 0:
                     res = evaluate(model, dev_dataloader, desc="Validation")
                     better={"COREFERENCE":False, "TEMPORAL": False, "CAUSAL": False, "SUBEVENT": False}
-                    for k in metric_names:
-                        if res["COREFERENCE"][k]["f1"] > best_score["COREFERENCE"][k]:
-                            best_score["COREFERENCE"][k] = res["COREFERENCE"][k]["f1"]
-                            better["COREFERENCE"] = True
+                    # for k in metric_names:
+                    #     if res["COREFERENCE"][k]["f1"] > best_score["COREFERENCE"][k]:
+                    #         best_score["COREFERENCE"][k] = res["COREFERENCE"][k]["f1"]
+                    #         better["COREFERENCE"] = True
                     for k in ["TEMPORAL", "CAUSAL", "SUBEVENT"]:
                         if res[k]["micro avg"]["f1-score"] > best_score[k]:
                             best_score[k] = res[k]["micro avg"]["f1-score"]
                             better[k]=True
-                    for k in ["COREFERENCE", "TEMPORAL", "CAUSAL", "SUBEVENT"]:
+                    for k in ["TEMPORAL", "CAUSAL", "SUBEVENT"]:
                         if better[k]:
                             print("better %s!"%(k))
                             state = {"model":model.state_dict(), "optimizer":optimizer.state_dict(), "scheduler": scheduler.state_dict()}
@@ -389,7 +389,7 @@ if __name__ == "__main__":
 
     dump_results={}
     print("*" * 30 + "Test"+ "*" * 30)
-    for k in ["COREFERENCE", "TEMPORAL", "CAUSAL", "SUBEVENT"]:
+    for k in ["TEMPORAL", "CAUSAL", "SUBEVENT"]:
         print("loading checkpoint from", os.path.join(output_dir, "best_%s"%(k)))
         state = torch.load(os.path.join(output_dir, "best_%s"%(k)))
         model.load_state_dict(state["model"])
