@@ -53,14 +53,14 @@ def evaluate(model, dataloader, desc=""):
                 data[k] = to_cuda(data[k])
         coref_scores, temporal_scores, causal_scores, subevent_scores = model(data)
         # coreference ###########################
-        for i in range(len(coref_scores)):
-            prob = coref_scores[i]
-            labels = data["coref_labels"][i]
-            pred_clusters, pred_event2cluster = get_predicted_clusters(prob)
-            gold_event2cluster = get_event2cluster(labels)
-            assert len(pred_event2cluster) == len(gold_event2cluster), print(pred_event2cluster, gold_event2cluster)
-            eval_result = EvalResult(labels, gold_event2cluster, pred_clusters, pred_event2cluster)
-            coref_train_eval_results.append(eval_result)
+        # for i in range(len(coref_scores)):
+        #     prob = coref_scores[i]
+        #     labels = data["coref_labels"][i]
+        #     pred_clusters, pred_event2cluster = get_predicted_clusters(prob)
+        #     gold_event2cluster = get_event2cluster(labels)
+        #     assert len(pred_event2cluster) == len(gold_event2cluster), print(pred_event2cluster, gold_event2cluster)
+        #     eval_result = EvalResult(labels, gold_event2cluster, pred_clusters, pred_event2cluster)
+        #     coref_train_eval_results.append(eval_result)
         labels = data["temporal_labels"]
         scores = temporal_scores
         scores = scores.view(-1, scores.size(-1))
@@ -276,30 +276,30 @@ if __name__ == "__main__":
                 coref_scores, temporal_scores, causal_scores, subevent_scores = model(data)
                 tmp_coref_loss=0.0
                 
-                for i in range(len(coref_scores)):
-                    prob = coref_scores[i]
-                    labels = data["coref_labels"][i]
-                    filled_labels = fill_expand(labels)
-                    filled_labels = to_cuda(filled_labels)
-                    weight = torch.eye(prob.size(0))
-                    weight[weight==0.0] = 0.1
-                    weight = weight.to(prob.device)
-                    prob_sum = torch.sum(torch.clamp(torch.mul(prob, filled_labels), eps, 1-eps), dim=1)
-                    tmp = torch.mean(torch.log(prob_sum)) * -1 / float(len(coref_scores))
-                    loss = loss + args.coreference_rate * tmp
-                    tmp_coref_loss += tmp
-                    pred_clusters, pred_event2cluster = get_predicted_clusters(prob)
-                    gold_event2cluster = get_event2cluster(labels)
-                    for key in gold_event2cluster:
-                        if key not in pred_event2cluster:
-                            pred_event2cluster[key] = (key)
-                    for key in pred_event2cluster:
-                        if key not in gold_event2cluster:
-                            gold_event2cluster[key] = (key)
-                    assert len(pred_event2cluster) == len(gold_event2cluster), print(pred_event2cluster, gold_event2cluster)
-                    eval_result = EvalResult(labels, gold_event2cluster, pred_clusters, pred_event2cluster)
-                    coref_train_eval_results.append(eval_result)
-                coref_losses.append(tmp_coref_loss.item())
+                # for i in range(len(coref_scores)):
+                #     prob = coref_scores[i]
+                #     labels = data["coref_labels"][i]
+                #     filled_labels = fill_expand(labels)
+                #     filled_labels = to_cuda(filled_labels)
+                #     weight = torch.eye(prob.size(0))
+                #     weight[weight==0.0] = 0.1
+                #     weight = weight.to(prob.device)
+                #     prob_sum = torch.sum(torch.clamp(torch.mul(prob, filled_labels), eps, 1-eps), dim=1)
+                #     tmp = torch.mean(torch.log(prob_sum)) * -1 / float(len(coref_scores))
+                #     loss = loss + args.coreference_rate * tmp
+                #     tmp_coref_loss += tmp
+                #     pred_clusters, pred_event2cluster = get_predicted_clusters(prob)
+                #     gold_event2cluster = get_event2cluster(labels)
+                #     for key in gold_event2cluster:
+                #         if key not in pred_event2cluster:
+                #             pred_event2cluster[key] = (key)
+                #     for key in pred_event2cluster:
+                #         if key not in gold_event2cluster:
+                #             gold_event2cluster[key] = (key)
+                #     assert len(pred_event2cluster) == len(gold_event2cluster), print(pred_event2cluster, gold_event2cluster)
+                #     eval_result = EvalResult(labels, gold_event2cluster, pred_clusters, pred_event2cluster)
+                #     coref_train_eval_results.append(eval_result)
+                # coref_losses.append(tmp_coref_loss.item())
                 
                 labels = data["temporal_labels"]
                 scores = temporal_scores
