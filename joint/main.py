@@ -389,7 +389,7 @@ if __name__ == "__main__":
 
     dump_results={}
     print("*" * 30 + "Test"+ "*" * 30)
-    for k in ["TEMPORAL", "CAUSAL", "SUBEVENT"]:
+    for k in ["TEMPORAL"]:
         print("loading checkpoint from", os.path.join(output_dir, "best_%s"%(k)))
         state = torch.load(os.path.join(output_dir, "best_%s"%(k)))
         model.load_state_dict(state["model"])
